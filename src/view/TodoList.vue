@@ -2,14 +2,13 @@
     <h1> Todo-List</h1>
     <div class="container">
         <div class="centre">
-            <div class="width" v-if="!isEditing">
-            <input  class="maininput" type="text" placeholder="Add your note" v-model="todo">
-            <button  class="btn-add" type="submit" value="add" @click="addToDo">Add Note</button>
+            <div class="width">
+                <input  class="maininput" type="text" placeholder="Add your note" v-model="todo">
+                <button  class="btn-add" type="submit" value="add" @click="noteHandler">
+                    {{isEditing ? "Edit" ? "Add Note" }}
+                </button>
              </div>
-             <div class="width" v-else>
-                <input  class="maininput" type="text" v-model="todo">
-                <button  class="btn-add" type="submit" value="update" @click="updateTodo">Update Note</button> 
-             </div>
+  
             <ul class="border">
                 <li class="todo" v-for="(todo, index) in todos" :key="todo">
                 {{index + 1}}) {{ todo }}
@@ -35,6 +34,14 @@ export default{
         }
     },
     methods:{
+        noteHandler () {
+            if (this.isEditing) {
+                this.updateTodo();
+            } else {
+                this.addToDo();
+            }
+        }
+        
         addToDo(){
             this.todos.push(this.todo);
             this.todo = ''
