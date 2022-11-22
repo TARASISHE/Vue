@@ -1,143 +1,475 @@
 <template>
-
-    <h1>Calculator</h1>
-    <div class="calculator">
-        <div class="display">{{current || '0' }}</div>
-        <button @click="clear"  class="op">C</button>
-        <button @click="sign" class="op">+/-</button>
-        <button @click="percent" class="op">%</button>
-        <button @click="divide" class="op">÷</button>
-        <button  @click="append('7')" class="number">7</button>
-        <button  @click="append('8')" class="number">8</button>
-        <button  @click="append('9')" class="number">9</button>
-        <button @click="times" class="op">x</button>
-        <button  @click="append('4')" class="number">4</button>
-        <button  @click="append('5')" class="number">5</button>
-        <button  @click="append('6')" class="number">6</button>
-        <button @click="minus" class="op">-</button>
-        <button  @click="append('3')" class="number">3</button>
-        <button  @click="append('2')" class="number">2</button>
-        <button  @click="append('1')" class="number">1</button>
-        <button  @click="add" class="op">+</button>
-        <button  @click="append('0')" class="number zero">0</button>
-        <button  @click="dot" class="op">.</button>
-        <button @click="equal" class="op">=</button>
-    </div>
+  <h1>Calculator</h1>
+  <div class="app">
+  <div class="calculator">
+    <input  type="text" @keyup.enter="calc()" v-model="result" placeholder="0">
+    <button class="cell num" @click="show(num)" v-for="num in numbers" :key="num">{{num}}</button>
+    <button class="cell op" @click="show(op)" v-for="op in operations" :key="op">{{op}}</button>
+    <button class="cell op" @click="calcPercent()">%</button>
+    <button class="cell op" @click="reset()">R</button>
+    <button class="cell op" @click="calc()">=</button>
+  </div>
+</div>
 </template>
+
+
+<script>
+export default{
+  components: {
+   
+  },
+  data(){
+    return{
+      result:'',
+      numbers:[1,2,3,4,5,6,7,8,9,0],
+      operations:['+','-','*','/','.',]
+    }
+  },
+  methods:{
+    show(char){
+      this.result = this.result.toString();
+      this.result += char;
+    },
+    reset(){
+      this.result='';
+    },
+    calc(){
+      this.result = eval(this.result)
+    },
+    calcPercent(){
+      this.result = `${parseFloat(this.result) / 100}`;
+    }
+
+  }
+}
+</script>
+
+
+
+<style scoped>
+  input{
+    width:100%;
+    height: 50px;
+  }
+  h1{
+    text-align: center;
+  }
+  .app{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+  }
+  .calculator {
+    display: flex;                       
+  flex-wrap: wrap;  
+  justify-content: space-around;
+  width: 40%;
+}
+
+input[type="text"] {
+  width: 100%;
+  height: 40px;
+  border: 0;
+  color: #243849;
+  font-size: 18px;
+  padding: 5px 5px;
+  text-align: right;
+}
+
+.cell {
+  flex: 33%;                       
+  height: 50px;
+  font-size: 18px;
+  border: 1px solid gray;
+}
+
+.num{
+  background-color: #243849;
+  color: #fff;
+  font-weight: 400;
+  transition: all 0.2s ease 0s;
+}
+.num:hover{
+  background-color: #fff;
+  color:#243849 ;
+}
+
+.op {
+  background-color: #ff9900;
+  color: #243849;
+  transition: all 0.2s ease 0s;
+}
+.op:hover{
+  background-color: #fff;
+  color:#243849 ;
+}
+</style>
+
+
+
+<!---
+<template>
+  <h1>Calculator</h1>
+  <div class="app">
+  <div class="calculator">
+    <input  type="text" @keyup.enter="calc()" v-model="result" placeholder="0">
+    <button class="cell num" @click="show(num)" v-for="num in numbers" :key="num">{{num}}</button>
+    <button class="cell op" @click="show(op)" v-for="op in operations" :key="op">{{op}}</button>
+    <button class="cell op" @click="reset()">R</button>
+    <button class="cell op" @click="calc()">=</button>
+  </div>
+</div>
+</template>
+
+
 
 <script>
 
 export default{
-    data(){
-        return{
-            previous: null,
-            current : '',
-            operator: null,
-            operatorClicked:false,
-        }
+  data(){
+    return{
+      result:'',
+      numbers:[1,2,3,4,5,6,7,8,9,0],
+      operations:['+','-','*','/','.','%']
+    }
+  },
+  methods:{
+    show(char){
+      this.result = this.result.toString();
+      this.result += char;
     },
-    methods:{
-        clear() {
-      this.current = '';
+    reset(){
+      this.result='';
     },
-    sign() {
-      this.current = this.current.charAt(0) === '-' ? 
-        this.current.slice(1) : `-${this.current}`;
-    },
-    percent() {
-      this.current = `${parseFloat(this.current) / 100}`;
-    },
+    calc(){
+      this.result = eval(this.result)
+    }
+  }
+}
+
+ 
+</script>
+
+
+
+<style scoped>
+  input{
+    width:100%;
+    height: 50px;
+  }
+  h1{
+    text-align: center;
+  }
+  .app{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+  }
+  .calculator {
+    display: flex;                       
+  flex-wrap: wrap;  
+  justify-content: space-around;
+  width: 40%;
+}
+
+input[type="text"] {
+  width: 100%;
+  height: 50px;
+  border: 0;
+  color: #243849;
+  font-size: 18px;
+  padding: 5px 5px;
+  text-align: right;
+}
+
+.cell {
+  flex: 33%;                       
+  height: 50px;
+  font-size: 18px;
+  border: 1px solid gray;
+}
+.num{
+  background-color: #243849;
+  color: #fff;
+  font-weight: 400;
+}
+.num:hover{
+  background-color: #fff;
+  color:#243849 ;
+}
+.zero {
+  grid-column: 1 / 3;
+  background-color: #243849;
+  color: #fff;
+  font-weight: 400;
+}
+.zero:hover{
+  background-color: #fff;
+  color:#243849 ;
+}
+.op {
+  background-color: #ff9900;
+  color: #243849;
+}
+.op:hover{
+  background-color: #fff;
+  color:#243849 ;
+}
+</style>
+-->
+
+
+
+
+
+
+
+
+
+
+<!--
+
+  <template>
+  <h1>Calculator</h1>
+  <div class="calculator">
+    <input class="display" type="text" placeholder="0" v-model="result">
+    <button class="cell" 
+    v-for="num in numberBtns" 
+    :key="num.name" 
+    :class="num.class" 
+    @click="num.handler"
+    >
+    {{num.name}}
+  </button>
+  </div>
+</template>
+
+<script>
+export default{
+  data(){
+    return {
+      operatorClicked: false,
+      operator: null,
+      result: '',
+      previous:null,
+      current:0,
+      numberBtns:[
+        {
+          name: 'R',
+          class: 'op',
+          handler:this.clear(),
+        },
+        {
+          name: '+/-',
+          class: 'op',
+          handler: this.changeSign(),
+
+        },
+        {
+          name: '%',
+          class: 'op'
+          handler: this.getPercent(),
+        },
+        {
+          name: '÷',
+          class: 'op',
+          handler:this.divide(),
+        },
+        {
+          name: 1,
+          class: 'num',
+          handler:this.append(),
+        },
+        {
+          name: 2,
+          class: 'num',
+          handler:this.append(),
+        },
+        {
+          name: 3,
+          class: 'num',
+          handler:this.append(),
+        },
+        {
+          name: '-',
+          class: 'op',
+          handler:this.subtract(),
+        },
+        {
+          name: 4,
+          class: 'num',
+          handler:this.append(),
+        },
+        {
+          name: 5,
+          class: 'num',
+          handler:this.append(),
+        },
+        {
+          name: 6,
+          class: 'num',
+         handler:this.append(),
+        },
+        {
+          name: 'x',
+          class: 'op',
+          handler:this.multiply(),
+        },
+        {
+          name: 7,
+          class: 'num',
+          handler:this.append(),
+        },
+        {
+          name: 8,
+          class: 'num',
+         handler:this.append(),
+        },
+        {
+          name: 9,
+          class: 'num',
+          handler:this.append(),
+        },
+        {
+          name: '+',
+          class: 'op',
+          handler:this.add(),
+        },
+        {
+          name: 0,
+          class: 'num, zero',
+          handler:this.append(),
+        },
+        {
+          name: '.',
+          class: 'op',
+          handler: this.useDot(),
+        },
+        {
+          name: '=',
+          class: 'op',
+          handler:getResult(),
+        },
+      ]
+    }
+  },
+  methods:{
     append(number) {
       if (this.operatorClicked) {
-        this.current = '';
+        this.result = '';
         this.operatorClicked = false;
       }
       this.current = `${this.current}${number}`;
     },
-    dot() {
-      if (this.current.indexOf('.') === -1) {
+    clear(){
+      this.result = '';
+    },
+    changeSign() {
+      this.result = this.result.charAt(0) === '-' ? 
+      this.result.slice(1) : `-${this.result}`;
+    },
+    getPercent(){
+      this.result = `${parseFloat(this.result) / 100}`;
+    },
+    useDot(){
+      if (this.result.indexOf('.') === -1) {
         this.append('.');
-      }
     },
-    setPrevious() {
-      this.previous = this.current;
-      this.operatorClicked = true;
+    getResult(){
+     this.result = eval(this.result);
     },
-    divide() {
-      this.operator = (a, b) => b / a;
-      this.setPrevious();
-    },
-    times() {
-      this.operator = (a, b) => a * b;
-      this.setPrevious();
-    },
-    minus() {
-      this.operator = (a, b) => b - a;
-      this.setPrevious();
-    },
-    add() {
-      this.operator = (a, b) => a + b;
-      this.setPrevious();
-    },
-    equal() {
-      this.current = `${this.operator(
-        parseFloat(this.current), 
+     getResult() {
+      this.result = `${this.operator(
+        parseFloat(this.result), 
         parseFloat(this.previous)
       )}`;
       this.previous = null;
+    },
+    setPrevious() {
+      this.previous = this.result;
+      this.operatorClicked = true;
+    },
+    divide() {
+      this.operator = (a, b) => a / b;
+      this.setPrevious();
+    },
+    multiply(){
+      this.operator = (a, b) => a * b;
+      this.setPrevious();
+    },
+    subtract(){
+      this.operator = (a, b) => a - b;
+      this.setPrevious();
+    },
+    add(){
+      this.operator = (a, b) => a + b;
+      this.setPrevious();
+    },
     }
-        
-    }
+  }
 }
+ 
 </script>
 
+
+
 <style scoped>
-        h1{
-          text-align: center;
-          margin-bottom: 50px;
-        }
-        .calculator {
-            margin: 0 auto;
-            width: 400px;
-            font-size: 40px;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-auto-rows: minmax(50px, auto);
-        }
+  h1{
+    text-align: center;
+  }
+  .calculator {
+  margin: 0 auto;
+  width: 400px;
+  font-size: 40px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: minmax(50px, auto);
+}
 
-        .display {
-            grid-column: 1 / 5;
-            background-color: #333;
-            color: white;
-            text-align: right;
-            padding: 0px 10px;
-        }
+.display {
+  grid-column: 1 / 5;
+  background-color: #333;
+  color: white;
+  font-size: 20px;
+  text-align: right;
+}
 
-        .zero {
-            grid-column: 1 / 3;
-        }
-
-        .number{
-            background-color: #F2F2F2;
-            border: 1px solid #999;
-            font-size: 20px;
-            transition: all 0.2s;
-        }
-
-        .number:hover{
-          background-color: orange;
-          color: white;
-        }
-        .op{
-            background-color: orange;
-            color: white;
-            border: 1px solid #999;
-            font-size: 20px;
-            transition: all 0.2s;
-        }
-
-        .op:hover{
-          background-color: white;
-          color: orange;
-        }
+.cell {
+  flex: 33%;                       
+  height: 50px;
+  font-size: 18px;
+  border: 1px solid gray;
+}
+.num{
+  background-color: #243849;
+  color: #fff;
+  font-weight: 400;
+}
+.num:hover{
+  background-color: #fff;
+  color:#243849 ;
+}
+.zero {
+  grid-column: 1 / 3;
+  background-color: #243849;
+  color: #fff;
+  font-weight: 400;
+}
+.zero:hover{
+  background-color: #fff;
+  color:#243849 ;
+}
+.op {
+  background-color: #ff9900;
+  color: #243849;
+}
+.op:hover{
+  background-color: #fff;
+  color:#243849 ;
+}
 </style>
+-->

@@ -1,17 +1,15 @@
 <template>
+    
     <h1> Todo-List</h1>
     <div class="container">
         <div class="centre">
             <div class="width">
                 <input  class="maininput" type="text" placeholder="Add your note" v-model="todo">
-                <button  class="btn-add" type="submit" value="add" @click="noteHandler">
-                    {{isEditing ? "Edit" ? "Add Note" }}
-                </button>
+                <button  class="btn-add" type="submit" value="add" @click="noteHandler" v-text="actionButtonName" />
              </div>
-  
             <ul class="border">
                 <li class="todo" v-for="(todo, index) in todos" :key="todo">
-                {{index + 1}}) {{ todo }}
+                {{index + 1}} {{ todo }}
                 <div>
                 <button @click="editTodo(todo, index)" class="btn-edit">Edit</button>
                 <button @click="deleteTodo(index)" class="btn-delete">Delete</button>
@@ -24,13 +22,22 @@
 
 <script>
 
+
 export default{
+    components: {
+    },
+
     data(){
         return{
             selectedIndex: null,
             isEditing : false,
             todo:'',
             todos:[],
+        }
+    },
+    computed:{
+        actionButtonName(){
+            return this.isEditing ? "Edit" : "Add Note";
         }
     },
     methods:{
@@ -40,7 +47,7 @@ export default{
             } else {
                 this.addToDo();
             }
-        }
+        },
         
         addToDo(){
             this.todos.push(this.todo);
@@ -61,13 +68,14 @@ export default{
         updateTodo(){
             this.todos.splice(this.selectedIndex, 1 , this.todo);
             this.isEditing = false;
+            this.todo = ''
         },
     }
 }
 
 </script>
 
-<style>
+<style  scoped>
     h1{
         text-align: center;
     }
@@ -96,15 +104,15 @@ export default{
         width: 200px;
         height: 30px;
         border-radius: 15px;
-        background-color:rgb(232, 73, 16) ;
-        border: 1px solid rgb(61, 40, 2);
+        background-color:rgb(0, 178, 124) ;
+        border: none;
         margin: 20px 0px 0px 0px;
         color: #FFF;
         font-size: 16px;
         transition: all 0.2s;
         }
     .btn-add:hover{
-        background-color:rgb(217, 14, 14) ; 
+        background-color:rgb(0, 252, 176) ; 
     }
     .todo{
         margin: 20px 0px;
@@ -123,8 +131,8 @@ export default{
         width: 100px;
         height: 30px;
         border-radius: 15px;
-        background-color:rgb(232, 73, 16) ;
-        border: 1px solid rgb(61, 40, 2);
+        background-color:rgb(0, 178, 124) ;
+        border: none;
         margin: 20px 20px 0px 0px;
         color: #FFF;
         font-size: 16px;
@@ -135,8 +143,8 @@ export default{
         width: 100px;
         height: 30px;
         border-radius: 15px;
-        background-color:rgb(232, 73, 16) ;
-        border: 1px solid rgb(61, 40, 2);
+        background-color:rgb(0, 178, 124) ;
+        border: none;
         margin: 20px 20px 0px 0px;
         color: #FFF;
         font-size: 16px;
@@ -144,13 +152,13 @@ export default{
     }
     .btn-edit:hover{
         background-color:#FFF ;
-        border:2px solid rgb(232, 73, 16);
-        color: rgb(232, 73, 16);
+        border:2px rgb(0, 178, 124);
+        color: rgb(0, 178, 124);
     }
     .btn-delete:hover{
         background-color:#FFF ;
-        border:2px solid rgb(232, 73, 16);
-        color: rgb(232, 73, 16);
+        border:2px rgb(0, 178, 124);
+        color: rgb(0, 178, 124);
     }
     .width{
         width: 100%;

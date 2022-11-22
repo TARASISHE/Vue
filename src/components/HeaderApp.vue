@@ -13,29 +13,28 @@
                         <router-link to="/todo-list">Todo-List</router-link>
                     </li>
                     <li class="list-item">
-                        <a href="">Weather Forecast</a>
+                        <router-link to="/weather-forecast">Weather Forecast</router-link>
                     </li>
                 </ul>
-                <a class="auth" href="">Log-In</a>
+                <router-link class="auth" to="/Login">
+                    Log-In
+                </router-link>
             </div>
         </div>
-    </div>
-    <div class="img-main">
-       
     </div>
 </template>
 
 <script>
-
 export default{
-
+ 
 }
 </script>
 
 <style>
     body{
          margin: 0;
-         background-color:rgba(240, 197, 118, 0.878);
+        background-color: #07c8d2fa;
+        
     }
 
     li{
@@ -48,25 +47,12 @@ export default{
     .wrapper{
         width: 100%;
         margin: 0;
-        padding: 0;
-        background-color: orange;
-        
+        padding: 0; 
     }
 
     .container{
         max-width: 1240px;
         margin: 0 auto;
-
-    }
-    .img-main {
-        width: 100%;
-        height: 200px;
-        opacity: 0.8;
-        background-image: url(../img/kyiv-ukraine-may-20-2020-260nw-1738508276.webp);
-        background-repeat: no-repeat;
-        background-size:cover;
-        background-position: center;
-       
     }
     .body{
         display: flex;
@@ -74,6 +60,7 @@ export default{
         justify-content: space-between;
         width: 100%;
         height: 100px;
+        padding: 0px 15px;
     }
     .list{
         display: flex;

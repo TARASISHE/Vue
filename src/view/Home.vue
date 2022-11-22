@@ -1,17 +1,17 @@
 <template>
+
     <div class="center">
-    <Item></Item>
+   <Card></Card>
     </div>
 </template>
 
 <script>
-import HeaderApp from '../components/HeaderApp.vue';
-import Item from '../components/item.vue';
+import Card from '../components/Card.vue'
 
 export default {
     components: {
-    HeaderApp,
-    Item,
+  
+    Card,
   }
 }
 </script>
