@@ -32,9 +32,7 @@ export default{
 
 <style>
     body{
-         margin: 0;
-        background-color: #07c8d2fa;
-        
+    margin: 0;  
     }
 
     li{
@@ -47,7 +45,8 @@ export default{
     .wrapper{
         width: 100%;
         margin: 0;
-        padding: 0; 
+        padding: 0;
+        background-color: #07c8d2fa; 
     }
 
     .container{

@@ -1,10 +1,12 @@
 <template>
-    <div class="item" v-for="card in navCards" :key="card"> 
+    <div class="item" v-for="card in navCards"  :key="card"> 
         <h3 class="item-title">{{card.title}}</h3>
         <p class="item-text">{{card.text}}</p> <!--@click="this.goToPage()"-->
+        <router-link :to="card.navigation"> 
         <button class="btn"> <!--@click="card.goToPage()"-->
             Try
         </button>
+        </router-link>
     </div>
 </template>
 
@@ -16,17 +18,20 @@ export default {
                 {
                     title:"Calculator",
                     text : "Try to use app-calculator",
+                    navigation: "/calculator",
                    // goToPage: this.goToPageCalc(),
                 },
                 {
                     title:"Todo-List",
                     text : "Try to use app-todo-list",
+                    navigation:"/todo-list",
                    // goToPage: this.goToPageTodoList(),
                 },
                 {
                     title:"Weather Forecast",
                     text : "Try to use app-weather-forecast",
-                },
+                    navigation:"/weather-forecast",
+                } 
             ]
         }
     }, 

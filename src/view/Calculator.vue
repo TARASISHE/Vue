@@ -2,7 +2,7 @@
   <h1>Calculator</h1>
   <div class="app">
   <div class="calculator">
-    <input  type="text" @keyup.enter="calc()" v-model="result" placeholder="0">
+    <input  type="text" @keyup.enter="calc()" @input="show($event.target.value)" v-model="result" placeholder="0">
     <button class="cell num" @click="show(num)" v-for="num in numbers" :key="num">{{num}}</button>
     <button class="cell op" @click="show(op)" v-for="op in operations" :key="op">{{op}}</button>
     <button class="cell op" @click="calcPercent()">%</button>
@@ -14,6 +14,7 @@
 
 
 <script>
+
 export default{
   components: {
    
@@ -27,8 +28,12 @@ export default{
   },
   methods:{
     show(char){
+      this.result='';
+      console.log(this.result)
       this.result = this.result.toString();
-      this.result += char;
+      if (typeof char === 'number'){
+        this.result += char;
+      }
     },
     reset(){
       this.result='';
@@ -40,7 +45,12 @@ export default{
       this.result = `${parseFloat(this.result) / 100}`;
     }
 
-  }
+  },
+  watch:{
+    result(val){
+      console.log(val)
+    }
+  },
 }
 </script>
 
@@ -231,8 +241,8 @@ input[type="text"] {
 
 
 
-<!--
 
+<!--
   <template>
   <h1>Calculator</h1>
   <div class="calculator">
@@ -261,98 +271,98 @@ export default{
         {
           name: 'R',
           class: 'op',
-          handler:this.clear(),
+          handler:this.clear,
         },
         {
           name: '+/-',
           class: 'op',
-          handler: this.changeSign(),
+          handler: this.changeSign,
 
         },
         {
           name: '%',
-          class: 'op'
-          handler: this.getPercent(),
+          class: 'op',
+          handler: this.getPercent,
         },
         {
           name: '÷',
           class: 'op',
-          handler:this.divide(),
+          handler:this.divide,
         },
         {
           name: 1,
           class: 'num',
-          handler:this.append(),
+          handler:this.append,
         },
         {
           name: 2,
           class: 'num',
-          handler:this.append(),
+          handler:this.append,
         },
         {
           name: 3,
           class: 'num',
-          handler:this.append(),
+          handler:this.append,
         },
         {
           name: '-',
           class: 'op',
-          handler:this.subtract(),
+          handler:this.subtract,
         },
         {
           name: 4,
           class: 'num',
-          handler:this.append(),
+          handler:this.append,
         },
         {
           name: 5,
           class: 'num',
-          handler:this.append(),
+          handler:this.append,
         },
         {
           name: 6,
           class: 'num',
-         handler:this.append(),
+         handler:this.append,
         },
         {
           name: 'x',
           class: 'op',
-          handler:this.multiply(),
+          handler:this.multiply,
         },
         {
           name: 7,
           class: 'num',
-          handler:this.append(),
+          handler:this.append,
         },
         {
           name: 8,
           class: 'num',
-         handler:this.append(),
+         handler:this.append,
         },
         {
           name: 9,
           class: 'num',
-          handler:this.append(),
+          handler:this.append,
         },
         {
           name: '+',
           class: 'op',
-          handler:this.add(),
+          handler:this.add,
         },
         {
           name: 0,
           class: 'num, zero',
-          handler:this.append(),
+          handler:this.append,
         },
         {
           name: '.',
           class: 'op',
-          handler: this.useDot(),
+          handler: this.useDot,
         },
         {
           name: '=',
           class: 'op',
-          handler:getResult(),
+          handler: this.getResult,
         },
       ]
     }
@@ -363,7 +373,8 @@ export default{
         this.result = '';
         this.operatorClicked = false;
       }
-      this.current = `${this.current}${number}`;
+      this.result = `${this.result}${number}`;
+      console.log(this.result)
     },
     clear(){
       this.result = '';
@@ -378,6 +389,7 @@ export default{
     useDot(){
       if (this.result.indexOf('.') === -1) {
         this.append('.');
+      }
     },
     getResult(){
      this.result = eval(this.result);
@@ -411,7 +423,7 @@ export default{
     },
     }
   }
-}
+
  
 </script>
 
