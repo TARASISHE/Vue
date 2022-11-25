@@ -15,14 +15,15 @@ export default{
   animation: rotate 2s linear infinite;
   z-index: 2;
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 20.5%;
+  left: 85%;
   margin: -25px 0 0 -25px;
-  width: 520px;
-  height: 220px;
+  width: 50px;
+  height: 50px;
+  color: aliceblue;
 }
   .path {
-    stroke: hsl(210, 70, 75);
+    stroke: rgb(0, 116, 232);
     stroke-linecap: round;
     animation: dash 1.5s ease-in-out infinite;
 }

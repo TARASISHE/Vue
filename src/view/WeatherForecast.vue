@@ -8,7 +8,11 @@
             placeholder="Search..."
             v-model="query"
             @keypress="fetchWeather"
+            
           />
+        </div>
+        <div v-if="loading">
+          <Spinner></Spinner>  
         </div>
   
         <div class="weather-wrap" v-if="weather.main">
@@ -28,43 +32,42 @@
 
 
 <script>
-
+import Spinner from '../components/Spinner.vue';
 export default{
+  components:{
+    Spinner,
+  },
     data(){
         return{
             apiKey:'776cbefeb4e33b7b80b3a1af5b49be36',
             urlBase: 'https://api.openweathermap.org/data/2.5/',
             query: '',
-            weather: {}
+            weather: {},
+            loading:false,
         }
     },
     methods:{
         async fetchWeather(e){
+          this.loading = true;
           try{
             if(e.key == 'Enter'){
               const resp = await fetch(`${this.urlBase}weather?q=${this.query}&units=metric&APPID=${this.apiKey}`);
-              const data = await resp.json;
-             /*   .then(res=>{
-                    return res.json();
-                })
-                .then(this.setResult) */
+              const data = await resp.json();
+              this.weather = data;
             }
           } catch (e){
-            console.log(e)
+            alert(`Error:${e}`)
           }
-         
-        },
-        setResult(results){
-            this.weather = results;
+         this.loading= false;
         },
         dateBuilder () {
             let d = new Date();
-            let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-            let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-            let day = days[d.getDay()];
-            let date = d.getDate();
-            let month = months[d.getMonth()];
-            let year = d.getFullYear();
+            const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            const day = days[d.getDay()];
+            const date = d.getDate();
+            const month = months[d.getMonth()];
+            const year = d.getFullYear();
             return `${day} , ${date} ${month} ${year}`;
         }
     }
