@@ -8,8 +8,11 @@
             placeholder="Search..."
             v-model="query"
             @keypress="fetchWeather"
-            
+            @input="fetchCity"
           />
+        <!-- <ul class="search-filter">
+            <li v-for=""></li>
+          </ul>-->
         </div>
         <div v-if="loading">
           <Spinner></Spinner>  
@@ -39,6 +42,8 @@ export default{
   },
     data(){
         return{
+            apiIdCity: 'V3CQ8Y6VXN',
+            apiKeyCity: '34ac34f54d6d72bec95dcfef38a0eece',
             apiKey:'776cbefeb4e33b7b80b3a1af5b49be36',
             urlBase: 'https://api.openweathermap.org/data/2.5/',
             query: '',
@@ -59,6 +64,17 @@ export default{
             alert(`Error:${e}`)
           }
          this.loading= false;
+        },
+        async fetchCity(e){
+          this.loading = true;
+          try{
+            const resp = await fetch (``)
+            const data = await resp.json();
+            console.log(data)
+          }catch(e){
+            alert(`Error:${e}`)
+          }
+          this.loading= false;
         },
         dateBuilder () {
             let d = new Date();
@@ -106,6 +122,7 @@ main {
   justify-content: center;
   width: 100%;
   margin-bottom: 30px;
+  position: relative;
 }
 .search-box .search-bar {
   display: block;
@@ -163,5 +180,13 @@ main {
   font-weight: 700;
   font-style: italic;
   text-shadow: 3px 6px rgba(0, 0, 0, 0.25);
+}
+
+.search-filter{
+  position: absolute;
+  margin-top: 80px;
+  background-color: aquamarine;
+  width: 80%;
+  height: 20px;
 }
 </style>
