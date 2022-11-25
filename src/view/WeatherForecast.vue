@@ -1,5 +1,5 @@
 <template>
-    <div id="apps" :class="typeof weather.main != 'undefined' && weather.main.temp > 16 ? 'warm': ''">
+    <div id="apps" :class="weather.main && weather.main.temp > 16 ? 'warm': ''">
       <main>
         <div class="search-box">
           <input 
@@ -11,7 +11,7 @@
           />
         </div>
   
-        <div class="weather-wrap" v-if="typeof weather.main != 'undefined'">
+        <div class="weather-wrap" v-if="weather.main">
           <div class="location-box">
             <div class="location"> {{weather.name }}, {{ weather.sys.country }}</div>
             <div class="date">{{ dateBuilder () }}</div>
@@ -32,21 +32,27 @@
 export default{
     data(){
         return{
-            api_key:'776cbefeb4e33b7b80b3a1af5b49be36',
-            url_base: 'https://api.openweathermap.org/data/2.5/',
+            apiKey:'776cbefeb4e33b7b80b3a1af5b49be36',
+            urlBase: 'https://api.openweathermap.org/data/2.5/',
             query: '',
             weather: {}
         }
     },
     methods:{
-        fetchWeather(e){
+        async fetchWeather(e){
+          try{
             if(e.key == 'Enter'){
-                fetch(`${this.url_base}weather?q=${this.query}&units=metric&APPID=${this.api_key}`)
-                .then(res=>{
+              const resp = await fetch(`${this.urlBase}weather?q=${this.query}&units=metric&APPID=${this.apiKey}`);
+              const data = await resp.json;
+             /*   .then(res=>{
                     return res.json();
                 })
-                .then(this.setResult)
+                .then(this.setResult) */
             }
+          } catch (e){
+            console.log(e)
+          }
+         
         },
         setResult(results){
             this.weather = results;
