@@ -10,9 +10,10 @@
             @keypress="fetchWeather"
             @input="fetchCity"
           />
-        <!-- <ul class="search-filter">
-            <li v-for=""></li>
-          </ul>-->
+         <ul class="search-filter">
+            <li v-for="city in fetchCity" :key="city"></li>
+             
+          </ul>
         </div>
         <div v-if="loading">
           <Spinner></Spinner>  
@@ -42,13 +43,13 @@ export default{
   },
     data(){
         return{
-            apiIdCity: 'V3CQ8Y6VXN',
-            apiKeyCity: '34ac34f54d6d72bec95dcfef38a0eece',
             apiKey:'776cbefeb4e33b7b80b3a1af5b49be36',
             urlBase: 'https://api.openweathermap.org/data/2.5/',
             query: '',
             weather: {},
             loading:false,
+            urlBaseCity: 'https://api.api-ninjas.com/v1/city?name=' ,
+            apiKeyCity: 'R0Cz2mIqmrBCfzrW+i35dA==2rznE5j7561Hmqjn',
         }
     },
     methods:{
@@ -65,10 +66,10 @@ export default{
           }
          this.loading= false;
         },
-        async fetchCity(e){
+       async fetchCity(e){
           this.loading = true;
           try{
-            const resp = await fetch (``)
+            const resp = await fetch (`${this.urlBaseCity}city?q=${this.query}&units=${this.apiKeyCity}`)
             const data = await resp.json();
             console.log(data)
           }catch(e){
