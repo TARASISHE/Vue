@@ -48,7 +48,6 @@ export default{
             query: '',
             weather: {},
             loading:false,
-            urlBaseCity: 'https://api.api-ninjas.com/v1/city?name=' ,
             apiKeyCity: 'R0Cz2mIqmrBCfzrW+i35dA==2rznE5j7561Hmqjn',
         }
     },
@@ -66,10 +65,10 @@ export default{
           }
          this.loading= false;
         },
-       async fetchCity(e){
+       async fetchCity(){
           this.loading = true;
           try{
-            const resp = await fetch (`${this.urlBaseCity}city?q=${this.query}&units=${this.apiKeyCity}`)
+            const resp = await fetch (`https://api.api-ninjas.com/v1/city?name=${this.query}`)
             const data = await resp.json();
             console.log(data)
           }catch(e){
