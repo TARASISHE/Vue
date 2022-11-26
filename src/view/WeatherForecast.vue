@@ -8,11 +8,11 @@
             placeholder="Search..."
             v-model="query"
             @keypress="fetchWeather"
-            @input="fetchCity"
+            @input="getSearchResults"
           />
-         <ul class="search-filter">
-            <li v-for="city in fetchCity" :key="city"></li>
-             
+      <ul class="search-filter">
+            <li v-for="city in cities" :key="city.id"></li>
+             {{this.city}}
           </ul>
         </div>
         <div v-if="loading">
@@ -36,6 +36,7 @@
 
 
 <script>
+
 import Spinner from '../components/Spinner.vue';
 export default{
   components:{
@@ -48,7 +49,9 @@ export default{
             query: '',
             weather: {},
             loading:false,
-            apiKeyCity: 'R0Cz2mIqmrBCfzrW+i35dA==2rznE5j7561Hmqjn',
+            queryTimeout:null,
+            cityApiKey:"pk.eyJ1IjoidGFyYXNpc2hlIiwiYSI6ImNsYXh4ZDJjbzA2M2Yzem81c3Z6ZTFsMDgifQ.TYjCtwTUeohyUJo_ustV5w",
+            cities:null,
         }
     },
     methods:{
@@ -65,16 +68,17 @@ export default{
           }
          this.loading= false;
         },
-       async fetchCity(){
-          this.loading = true;
-          try{
-            const resp = await fetch (`https://api.api-ninjas.com/v1/city?name=${this.query}`)
-            const data = await resp.json();
-            console.log(data)
-          }catch(e){
-            alert(`Error:${e}`)
-          }
-          this.loading= false;
+        getSearchResults(){
+          clearTimeout(this.queryTimeout);
+          this.queryTimeout = setTimeout(async ()=>{
+            if(this.query !== ''){
+              const result = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${this.query}.json?access_token=${this.cityApiKey}&types=place`);
+              const data = await result.json();
+              this.cities = data;
+              console.log(this.cities)
+            }
+          },300)
+          this.cities=null
         },
         dateBuilder () {
             let d = new Date();
