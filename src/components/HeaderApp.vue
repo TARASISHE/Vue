@@ -16,19 +16,26 @@
                         <router-link to="/weather-forecast">Weather Forecast</router-link>
                     </li>
                 </ul>
-                <router-link class="auth" to="/Login">
-                    Log-In
-                </router-link>
+              <!--  <button @click="$store.dispatch('logout')">Logout</button> -->
             </div>
         </div>
     </div>
 </template>
 
+<!--
 <script>
-export default{
- 
+import { onBeforeMount } from 'vue'
+import { useStore } from 'vuex'
+export default {
+  setup() {
+    const store = useStore()
+    onBeforeMount(() => {
+      store.dispatch('fetchUser')
+    })
+  }
 }
 </script>
+-->
 
 <style>
     body{

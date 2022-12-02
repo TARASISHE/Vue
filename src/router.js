@@ -5,6 +5,7 @@ import TodoList from './view/TodoList.vue'
 import WeatherForecast from './view/WeatherForecast.vue'
 import Login from './view/Login.vue'
 import Register from './view/Register.vue'
+// import { auth } from 'firebase/auth'
 
 
 
@@ -12,11 +13,55 @@ export default createRouter({
     history: createWebHashHistory(),
     
     routes:[
-      {  path: "/home", component: Home},
-      {  path: "/calculator", component: Calculator},
-      {  path: "/todo-list", component: TodoList },
-      {  path: "/weather-forecast", component:WeatherForecast},
-      {  path: "/login", component:Login},
-      {  path: "/register", component:Register}
-    ]
+      {  path: "/home", 
+        name: 'Home',
+        component: Home,
+        meta: {
+          requiresAuth: true
+        }
+      },
+      {  path: "/calculator", 
+         name: 'Calculator',
+         component: Calculator,
+         meta: {
+          requiresAuth: true
+        }
+      },
+      {  path: "/todo-list",
+         name: 'TodoList',
+         component: TodoList ,
+         meta: {
+          requiresAuth: true
+        }
+      },
+      {  path: "/weather-forecast",
+         name: 'WeatherForecast',
+         component:WeatherForecast,
+         meta: {
+          requiresAuth: true
+        }
+      },
+      {  path: "/login", 
+         name:"Login",
+         component:Login
+      },
+      {  path: "/register",
+         name:"Register",
+         component:Register,
+      }
+    ],
+
+   /* $router:beforeEach((to, from, next) => {
+      if (to.path === '/login' && auth.currentUser) {
+        next('/')
+        return;
+      }
+    
+      if (to.matched.some(record => record.meta.requiresAuth) && !auth.currentUser) {
+        next('/login')
+        return;
+      }
+    
+      next();
+    }),*/
 })

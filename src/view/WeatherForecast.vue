@@ -7,12 +7,16 @@
             class="search-bar" 
             placeholder="Search..."
             v-model="query"
-            @keypress="fetchWeather"
             @input="getSearchResults"
           />
-      <ul class="search-filter">
-            <li v-for="city in cities" :key="city.id"></li>
-             {{this.city}}
+      <ul class="search-filter"  v-if="this.searchCityPanel">
+            <li class="search-item" 
+            v-for="city in cities"
+            :key="city.id"
+            @click="appendCity(city.place_name, city.geometry.coordinates)"
+            > 
+              {{city.place_name}}
+            </li> 
           </ul>
         </div>
         <div v-if="loading">
@@ -21,7 +25,7 @@
   
         <div class="weather-wrap" v-if="weather.main">
           <div class="location-box">
-            <div class="location"> {{weather.name }}, {{ weather.sys.country }}</div>
+            <div class="location"> {{query}}</div>
             <div class="date">{{ dateBuilder () }}</div>
           </div>
   
@@ -33,10 +37,7 @@
       </main>
     </div>
   </template>
-
-
 <script>
-
 import Spinner from '../components/Spinner.vue';
 export default{
   components:{
@@ -51,34 +52,33 @@ export default{
             loading:false,
             queryTimeout:null,
             cityApiKey:"pk.eyJ1IjoidGFyYXNpc2hlIiwiYSI6ImNsYXh4ZDJjbzA2M2Yzem81c3Z6ZTFsMDgifQ.TYjCtwTUeohyUJo_ustV5w",
-            cities:null,
+            cities:{},
+            searchCityPanel:false,
         }
     },
     methods:{
-        async fetchWeather(e){
+        async fetchWeather(lon,lat){
           this.loading = true;
           try{
-            if(e.key == 'Enter'){
-              const resp = await fetch(`${this.urlBase}weather?q=${this.query}&units=metric&APPID=${this.apiKey}`);
+              const resp = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${this.apiKey}&units=metric`);
               const data = await resp.json();
               this.weather = data;
-            }
           } catch (e){
             alert(`Error:${e}`)
           }
          this.loading= false;
         },
         getSearchResults(){
+          this.searchCityPanel=true;
           clearTimeout(this.queryTimeout);
           this.queryTimeout = setTimeout(async ()=>{
             if(this.query !== ''){
               const result = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${this.query}.json?access_token=${this.cityApiKey}&types=place`);
               const data = await result.json();
-              this.cities = data;
+              this.cities = data.features;
               console.log(this.cities)
             }
           },300)
-          this.cities=null
         },
         dateBuilder () {
             let d = new Date();
@@ -89,6 +89,12 @@ export default{
             const month = months[d.getMonth()];
             const year = d.getFullYear();
             return `${day} , ${date} ${month} ${year}`;
+        },
+        appendCity(city,[lon,lat]){
+          this.searchCityPanel=true;
+          this.query = city
+          this.fetchWeather(lon,lat)
+          this.searchCityPanel=false;
         }
     }
 }
@@ -132,7 +138,6 @@ main {
   display: block;
   width: 80%;
   padding: 15px;
-  
   color: #313131;
   font-size: 20px;
   appearance: none;
@@ -141,13 +146,13 @@ main {
   background: none;
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
   background-color: rgba(255, 255, 255, 0.5);
-  border-radius: 0px 16px 0px 16px;
+  border-radius: 16px 16px 0px 0px;
   transition: 0.4s;
 }
 .search-box .search-bar:focus {
   box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.25);
   background-color: rgba(255, 255, 255, 0.75);
-  border-radius: 16px 0px 16px 0px;
+  border-radius: 0px 16px 0px 0px;
 }
 .location-box .location {
   color: #FFF;
@@ -188,9 +193,14 @@ main {
 
 .search-filter{
   position: absolute;
-  margin-top: 80px;
-  background-color: aquamarine;
+  top: 100%;
+  background-color: rgba(255, 255, 255, 1.753);
   width: 80%;
-  height: 20px;
+  height: 215px;
+  border-radius: 0px 0px 16px 16px;
+}
+
+.search-item{
+  padding: 10px;
 }
 </style>

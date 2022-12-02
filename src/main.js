@@ -3,6 +3,9 @@ import App from './App.vue'
 import  router from './router'
 import './assets/tailwind.css'
 import Vuelidate from 'vuelidate'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+import { getAuth } from "firebase/auth"
 
 
 import { initializeApp } from "firebase/app";
@@ -19,14 +22,16 @@ const firebaseConfig = {
   measurementId: "G-9PRKZZT4J6"
 };
 
-
 initializeApp(firebaseConfig);
+ //const apps = initializeApp(firebaseConfig);
 
-
+/*const auth = getAuth(apps)
+export { auth }*/
 
 
 const app = createApp(App);
 app.use(router);
+app.use(VueAxios, axios)
 app.use(Vuelidate)
 
 app.mount('#app');
